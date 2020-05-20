@@ -89,16 +89,44 @@ func (a *API) handleIndex(c echo.Context) error {
 	return c.File("./internal/web/index.html")
 }
 
+// Source structure for domain\article\site\source description
+type Source struct {
+	Date         time.Time `json:"date" validate:"required"`
+	DateFormated string
+	Title        string `json:"title" validate:"required"`
+}
+
+type ResponseData struct {
+	Source
+	Url string `json:"url"`
+}
+
+type TemplateData struct{
+	Responses []ResponseData
+	Query string
+}
+
 func (a *API) handleSearch(c echo.Context) error {
-	// request := &SearchRequest{}
-	// if err := c.Bind(request); err != nil {
-	// 	log.Debug().Err(err).Msg("handleSearch Bind err")
-	// 	return echo.NewHTTPError(http.StatusBadRequest)
-	// }
+	request := &SearchRequest{}
+	if err := c.Bind(request); err != nil {
+		log.Debug().Err(err).Msg("handleSearch Bind err")
+		return echo.NewHTTPError(http.StatusBadRequest)
+	}
+	data := TemplateData{
+		Responses:[]ResponseData{
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+		},
+		Query: request.Query,
+	}
+	
 
-	// return c.String(http.StatusOK, request.Query)
-
-	return c.File("./internal/web/search.html")
+	return c.Render(http.StatusOK, "search.html", data)
 }
 
 // Run start the server.

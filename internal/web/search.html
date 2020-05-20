@@ -16,16 +16,16 @@
             <div class="title">PolySE</div>
             <div class="form">
                 <form action="search" method="get">
-                    <input class="textbox" type="text" name="q" id="q" required="required">
+                    <input class="textbox" type="text" name="q" id="q" value="{{.Query}}" required="required">
                 </form>
             </div>
         </div>
         <div class="results">
-            {{range .}}
+            {{range .Responses}}
             <div class="result">
                 <div class="article"><a href="{{.Url}}">{{.Source.Title}}</a></div>
                 <div class="url"><a href="{{.Url}}">{{.Url}}</a></div>
-                <div class="date">{{.Source.Date}}</div>
+                <div class="date">{{.Source.DateFormated}}</div>
             </div>
             {{end}}
         </div>
