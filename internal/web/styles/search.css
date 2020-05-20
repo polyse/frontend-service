@@ -1,32 +1,78 @@
-.field, .results {
-    padding: 20px;
-}
-.field {
-    position: sticky;
-    top: 0;
+.field{
     background-color: white;
+    border-bottom: 1px solid rgba(179, 179, 179, 0.75);
 }
-.title{
-    margin-right: 30px;
-}
-.result:not(:last-child){
-    margin-bottom: 27px;
+.result{
+    width: auto;
 }
 .result a{
     text-decoration: none;
 }
-.url a{
-    color: rgba(179, 179, 179, 0.75);
-    font-size: 18px;
-}
 .article{
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 .article a{
     color: rgb(49, 49, 49);
     font-size: 39px;
 }
+.url{
+    margin-bottom: 2px;
+}
+.url a{
+    color: rgba(179, 179, 179, 0.75);
+    font-size: 18px;
+}
 .date {
     color: rgba(179, 179, 179, 0.75);
     font-size: 15px;
+}
+@media only screen and (min-width: 889px){
+    .field {
+        align-items: center;
+        padding: 20px;
+        position: sticky;
+        top: 0;
+    }
+    .title{
+        margin-right: 30px;
+    }
+    .textbox{
+        width: 585px;
+        max-width: 85vw;
+    }
+    .result{
+        margin: 20px;
+    }
+    .result:hover a{
+        border-bottom: 1px solid rgba(179, 179, 179, 0.75);
+    }
+}
+@media only screen and (max-width: 888px){
+    .field{
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .form{
+        width: 92%;
+        margin: 20px 4%;
+    }
+    .title{
+        margin-top: 10px;
+        margin-left: 4%;
+    }
+    .textbox{
+        width: 100%;
+    }
+    .result{
+        margin: 10px 2%;
+        padding: 10px 2%;
+    }
+    .result:hover{
+        border-radius: 30px;
+        box-shadow: 0 0 4px rgba(179, 179, 179, 0.75);
+    }
+    .title{
+        font-size: 55px;
+    }
+
 }

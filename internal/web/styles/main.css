@@ -3,7 +3,6 @@ body {
 }
 .field {
     display: flex;
-    align-items: center;
 }
 .title {
     font-family: 'Poiret One', cursive;
@@ -14,8 +13,6 @@ body {
     font-family: 'M PLUS Rounded 1c', sans-serif;
 }
 .textbox {
-    width: 585px;
-    max-width: 85vw;
     height: 55px;
     box-sizing: border-box;
     border: 1px solid #ccc;

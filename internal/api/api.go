@@ -101,9 +101,9 @@ type ResponseData struct {
 	Url string `json:"url"`
 }
 
-type TemplateData struct{
+type TemplateData struct {
 	Responses []ResponseData
-	Query string
+	Query     string
 }
 
 func (a *API) handleSearch(c echo.Context) error {
@@ -113,7 +113,7 @@ func (a *API) handleSearch(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest)
 	}
 	data := TemplateData{
-		Responses:[]ResponseData{
+		Responses: []ResponseData{
 			{
 				Url: "./internal/web/index.html",
 				Source: Source{
@@ -124,7 +124,6 @@ func (a *API) handleSearch(c echo.Context) error {
 		},
 		Query: request.Query,
 	}
-	
 
 	return c.Render(http.StatusOK, "search.html", data)
 }

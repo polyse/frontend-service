@@ -13,3 +13,7 @@
 .title{
     margin-bottom: 30px;
 }
+.textbox{
+    width: 585px;
+    max-width: 85vw;
+}
