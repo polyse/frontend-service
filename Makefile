@@ -17,3 +17,4 @@ run_server:
 
 test:
 	$(GOCMD) test -v ./...
+	
