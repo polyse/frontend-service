@@ -5,7 +5,6 @@ package api
 import (
 	"html/template"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -23,6 +22,7 @@ type API struct {
 type AppConfig struct {
 	NetInterface string
 	Timeout      time.Duration
+	DB           string
 }
 
 func (ac *AppConfig) checkConfig() {
@@ -36,6 +36,13 @@ func (ac *AppConfig) checkConfig() {
 	}
 }
 
+// SearchRequest is strust for storage and validate query param.
+type SearchRequest struct {
+	Query  string `validate:"required" query:"q"`
+	Limit  int    `validate:"gte=0" query:"limit"`
+	Offset int    `validate:"gte=0" query:"offset"`
+}
+
 // TemplateRenderer is a custom html/template renderer for Echo framework
 type TemplateRenderer struct {
 	templates *template.Template
@@ -43,12 +50,6 @@ type TemplateRenderer struct {
 
 // Render renders a template document
 func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-
-	// Add global methods if data is a map
-	// if viewContext, isMap := data.(map[string]interface{}); isMap {
-	// 	viewContext["reverse"] = c.Echo().Reverse
-	// }
-
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 
@@ -65,15 +66,14 @@ func NewApp(appCfg AppConfig) (*API, error) {
 		addr: appCfg.NetInterface,
 	}
 
-	// renderer := &TemplateRenderer{
-	// 	templates: template.Must(template.ParseGlob("./internal/web/*.html")),
-	// }
-	// e.Renderer = renderer
-
 	e.Use(logMiddleware)
+	e.Renderer = &TemplateRenderer{
+		templates: template.Must(template.ParseGlob("./internal/web/*.html")),
+	}
 
 	e.GET("/healthcheck", a.handleHealthcheck)
 	e.GET("/", a.handleIndex)
+	e.GET("/search", a.handleSearch)
 	e.Static("/", "./internal/web")
 
 	log.Debug().Msg("endpoints registered")
@@ -86,11 +86,17 @@ func (a *API) handleHealthcheck(c echo.Context) error {
 }
 
 func (a *API) handleIndex(c echo.Context) error {
-	file, err := ioutil.ReadFile("./internal/web/index.html")
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	return c.File("./internal/web/index.html")
+}
+
+func (a *API) handleSearch(c echo.Context) error {
+	request := &SearchRequest{}
+	if err := c.Bind(request); err != nil {
+		log.Debug().Err(err).Msg("handleSearch Bind err")
+		return echo.NewHTTPError(http.StatusBadRequest)
 	}
-	return c.HTML(http.StatusOK, string(file))
+	
+	return c.String(http.StatusOK, request.Query)
 }
 
 // Run start the server.
