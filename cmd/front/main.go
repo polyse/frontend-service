@@ -41,7 +41,7 @@ func main() {
 }
 
 func initFrontendServiceCfg(c *config) (api.AppConfig, error) {
-	return api.AppConfig{Timeout: c.Timeout, NetInterface: c.Listen}, nil
+	return api.AppConfig{Timeout: c.Timeout, NetInterface: c.Listen, DB: c.DB}, nil
 }
 
 func initLogger(c *config) error {

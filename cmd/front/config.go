@@ -11,6 +11,7 @@ import (
 // Config is main application configuration structure.
 type config struct {
 	Listen   string        `env:"LISTEN" envDefault:"localhost:9900"`
+	DB       string        `env:"DB" envDefault:"localhost:9000"`
 	Timeout  time.Duration `env:"TIMEOUT" envDefault:"10ms"`
 	LogLevel string        `env:"LOG_LEVEL" envDefault:"info"`
 	LogFmt   string        `env:"LOG_FMT" envDefault:"console"`
