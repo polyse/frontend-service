@@ -1,0 +1,32 @@
+.field, .results {
+    padding: 20px;
+}
+.field {
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+.title{
+    margin-right: 30px;
+}
+.result:not(:last-child){
+    margin-bottom: 27px;
+}
+.result a{
+    text-decoration: none;
+}
+.url a{
+    color: rgba(179, 179, 179, 0.75);
+    font-size: 18px;
+}
+.article{
+    margin-bottom: 5px;
+}
+.article a{
+    color: rgb(49, 49, 49);
+    font-size: 39px;
+}
+.date {
+    color: rgba(179, 179, 179, 0.75);
+    font-size: 15px;
+}

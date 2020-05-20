@@ -90,13 +90,15 @@ func (a *API) handleIndex(c echo.Context) error {
 }
 
 func (a *API) handleSearch(c echo.Context) error {
-	request := &SearchRequest{}
-	if err := c.Bind(request); err != nil {
-		log.Debug().Err(err).Msg("handleSearch Bind err")
-		return echo.NewHTTPError(http.StatusBadRequest)
-	}
-	
-	return c.String(http.StatusOK, request.Query)
+	// request := &SearchRequest{}
+	// if err := c.Bind(request); err != nil {
+	// 	log.Debug().Err(err).Msg("handleSearch Bind err")
+	// 	return echo.NewHTTPError(http.StatusBadRequest)
+	// }
+
+	// return c.String(http.StatusOK, request.Query)
+
+	return c.File("./internal/web/search.html")
 }
 
 // Run start the server.
