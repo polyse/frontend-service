@@ -3,6 +3,9 @@
 package api
 
 import (
+	"html/template"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -33,6 +36,22 @@ func (ac *AppConfig) checkConfig() {
 	}
 }
 
+// TemplateRenderer is a custom html/template renderer for Echo framework
+type TemplateRenderer struct {
+	templates *template.Template
+}
+
+// Render renders a template document
+func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+
+	// Add global methods if data is a map
+	// if viewContext, isMap := data.(map[string]interface{}); isMap {
+	// 	viewContext["reverse"] = c.Echo().Reverse
+	// }
+
+	return t.templates.ExecuteTemplate(w, name, data)
+}
+
 // NewApp returns a new ready-to-launch API object with adjusted settings.
 func NewApp(appCfg AppConfig) (*API, error) {
 	appCfg.checkConfig()
@@ -46,9 +65,16 @@ func NewApp(appCfg AppConfig) (*API, error) {
 		addr: appCfg.NetInterface,
 	}
 
+	// renderer := &TemplateRenderer{
+	// 	templates: template.Must(template.ParseGlob("./internal/web/*.html")),
+	// }
+	// e.Renderer = renderer
+
 	e.Use(logMiddleware)
 
 	e.GET("/healthcheck", a.handleHealthcheck)
+	e.GET("/", a.handleIndex)
+	e.Static("/", "./internal/web")
 
 	log.Debug().Msg("endpoints registered")
 
@@ -57,6 +83,14 @@ func NewApp(appCfg AppConfig) (*API, error) {
 
 func (a *API) handleHealthcheck(c echo.Context) error {
 	return c.JSON(http.StatusOK, http.StatusText(http.StatusOK))
+}
+
+func (a *API) handleIndex(c echo.Context) error {
+	file, err := ioutil.ReadFile("./internal/web/index.html")
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	return c.HTML(http.StatusOK, string(file))
 }
 
 // Run start the server.
