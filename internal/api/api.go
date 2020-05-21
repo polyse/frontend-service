@@ -121,6 +121,97 @@ func (a *API) handleSearch(c echo.Context) error {
 					DateFormated: time.Now().Format("Jan-02-2006"),
 				},
 			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
+			{
+				Url: "./internal/web/index.html",
+				Source: Source{
+					Title:        request.Query,
+					DateFormated: time.Now().Format("Jan-02-2006"),
+				},
+			},
 		},
 		Query: request.Query,
 	}

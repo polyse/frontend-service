@@ -13,10 +13,13 @@
 <body>
     <div class="wrapper">
         <div class="field">
-            <div class="title">PolySE</div>
+            <div><img class="logo" src="images/logo.png" alt="PolySE logo"></div>
             <div class="form">
                 <form action="search" method="get">
-                    <input class="textbox" type="text" name="q" id="q" value="{{.Query}}" required="required">
+                    <div class="flex-container">
+                        <input class="textbox" type="text" name="q" id="q"  value="{{.Query}}" required="required">
+                        <button class="button-search" type="submit"></button>
+                    </div>
                 </form>
             </div>
         </div>

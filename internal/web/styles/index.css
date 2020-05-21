@@ -6,14 +6,20 @@
     justify-content: center;
 }
 .field {
-    margin-top: 30vh;
+    margin-top: 28vh;
     flex-direction: column;
     justify-content: center;
 }
-.title{
+.logo{
     margin-bottom: 30px;
+    height: auto;
+    width: 240px;
+}
+.flex-container{
+    width: 620px;
+    max-width: 90vw;
 }
 .textbox{
-    width: 585px;
-    max-width: 85vw;
+    margin-right: 20px;
+    max-width: calc(90vw - 75px);
 }

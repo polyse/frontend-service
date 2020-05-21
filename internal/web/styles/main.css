@@ -3,29 +3,38 @@ body {
 }
 .field {
     display: flex;
+    align-items: center;
 }
-.title {
-    font-family: 'Poiret One', cursive;
-    font-size: 90px;
-    color: rgb(49, 49, 49);
+.flex-container{
+    display: flex;
 }
 .textbox, .results{
     font-family: 'M PLUS Rounded 1c', sans-serif;
 }
-.textbox {
+.textbox, .button-search{
+    display: block;
     height: 55px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 30px;
+}
+.textbox {
+    flex-grow: 1;
     font-size: 27px;
     background-color: white;
-    background:  15px 50% no-repeat url('../images/loupe.svg');
-    background-size: auto 50%;
-    padding: 14px 20px 14px 53px;
+    padding: 14px 20px;
     outline: none;
 }
 .textbox:focus, .textbox:hover{
-    border: 1.5px solid rgb(192, 192, 192);
-    border-radius: 30px;
-    box-shadow: 0 0 5px rgba(179, 179, 179, 0.75);
+    border: 1px solid rgb(192, 192, 192);
+    box-shadow: 0 0 5px rgba(200, 200, 200, 0.75);
+}
+.button-search{
+    width: 55px;
+    background:  15px 50% no-repeat url('../images/loupe.svg');
+    background-size: auto 50%;
+}
+.button-search:focus, .button-search:hover{
+    border: 2px solid rgb(182, 182, 182);
+    box-shadow: 0 0 6px rgba(192, 192, 192, 0.75);
 }
