@@ -5,7 +5,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/polyse/frontend-service/internal/api"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/xlab/closer"
