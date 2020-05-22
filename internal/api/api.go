@@ -40,7 +40,10 @@ func (ac *AppConfig) checkConfig() {
 		ac.Timeout = 10 * time.Millisecond
 	}
 	if ac.DB == "" {
-		ac.DB = "localhost:9000"
+		ac.DB = "http://localhost:9000"
+	}
+	if ac.DBCollection == "" {
+		ac.DBCollection = "default"
 	}
 }
 
