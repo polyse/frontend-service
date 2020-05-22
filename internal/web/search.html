@@ -29,7 +29,7 @@
             <div class="result">
                 <div class="article"><a href="{{.Url}}">{{.Source.Title}}</a></div>
                 <div class="url"><a href="{{.Url}}">{{.Url}}</a></div>
-                <div class="date">{{.Source.DateFormated}}</div>
+                <div class="date">{{.Source.Date.Format "Jan 02, 2006"}}</div>
             </div>
             {{end}}
         </div>
