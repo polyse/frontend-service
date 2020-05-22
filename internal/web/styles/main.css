@@ -17,13 +17,13 @@ body {
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 30px;
+    outline: none;
 }
 .textbox {
     flex-grow: 1;
     font-size: 27px;
     background-color: white;
     padding: 14px 20px;
-    outline: none;
 }
 .textbox:focus, .textbox:hover{
     border: 1px solid rgb(192, 192, 192);

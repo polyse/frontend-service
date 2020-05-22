@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 )
@@ -43,14 +44,24 @@ type SearchRequest struct {
 	Offset int    `validate:"gte=0" query:"offset"`
 }
 
+// Validator - to add custom validator in echo.
+type Validator struct {
+	validator *validator.Validate
+}
+
+// Validate add go-playground/validator in echo.
+func (v *Validator) Validate(i interface{}) error {
+	return v.validator.Struct(i)
+}
+
 // TemplateRenderer is a custom html/template renderer for Echo framework
 type TemplateRenderer struct {
-	templates *template.Template
+	*template.Template
 }
 
 // Render renders a template document
 func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
+	return t.Template.ExecuteTemplate(w, name, data)
 }
 
 // NewApp returns a new ready-to-launch API object with adjusted settings.
@@ -68,8 +79,9 @@ func NewApp(appCfg AppConfig) (*API, error) {
 
 	e.Use(logMiddleware)
 	e.Renderer = &TemplateRenderer{
-		templates: template.Must(template.ParseGlob("./internal/web/*.html")),
+		Template: template.Must(template.ParseGlob("./internal/web/*.html")),
 	}
+	e.Validator = &Validator{validator: validator.New()}
 
 	e.GET("/healthcheck", a.handleHealthcheck)
 	e.GET("/", a.handleIndex)
@@ -108,10 +120,21 @@ type TemplateData struct {
 
 func (a *API) handleSearch(c echo.Context) error {
 	request := &SearchRequest{}
+
 	if err := c.Bind(request); err != nil {
 		log.Debug().Err(err).Msg("handleSearch Bind err")
 		return echo.NewHTTPError(http.StatusBadRequest)
 	}
+
+	if err := c.Validate(request); err != nil {
+		if request.Query == "" {
+			return a.handleIndex(c)
+		} else {
+			log.Debug().Err(err).Msg("handleSearch Validate err")
+			return echo.NewHTTPError(http.StatusBadRequest)
+		}
+	}
+
 	data := TemplateData{
 		Responses: []ResponseData{
 			{
