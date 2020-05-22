@@ -39,10 +39,11 @@
     }
     .flex-container{
         width: 620px;
-        max-width: calc(100vw - 250px);
+        max-width: calc(100vw - 280px);
     }
     .textbox{
         margin-right: 20px;
+        max-width: calc(100vw - 355px);
     }
     .result{
         margin: 20px 40px;
