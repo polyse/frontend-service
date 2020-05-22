@@ -45,6 +45,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/polyse/database v0.0.0-20200518132916-d5d66500b202 h1:DNFYqHb8TS9wh4QT+pCH0Ceg4IJEntIbDSvWHzx04b0=
 github.com/polyse/database v0.0.0-20200518132916-d5d66500b202/go.mod h1:76DA9NwEpUt+AOgYjrWqK4/BZ4MmZGlQM4F65cxMv6Q=
+github.com/polyse/database-sdk v1.0.1 h1:j4+E7ggDnj65srchi8mAvZn+nc3YYHdQpsPn6DBfmKg=
+github.com/polyse/database-sdk v1.0.1/go.mod h1:daXlSgVeh/FlNCH7HGLJpGlrZTvYLFN0/lNbXW/7Ktg=
 github.com/rs/xid v1.2.1/go.mod h1:+uKXf+4Djp6Md1KODXJxgGQPKngRmWyn10oCKFzNHOQ=
 github.com/rs/zerolog v1.18.0 h1:CbAm3kP2Tptby1i9sYy2MGRg0uxIN9cyDb59Ys7W8z8=
 github.com/rs/zerolog v1.18.0/go.mod h1:9nvC1axdVrAHcu/s9taAVfBuIdTZLVQmKQyvrUjF5+I=

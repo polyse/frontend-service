@@ -10,13 +10,15 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
+	sdk "github.com/polyse/database-sdk"
 	"github.com/rs/zerolog/log"
 )
 
 // API structure containing the necessary server settings and responsible for starting and stopping it.
 type API struct {
-	e    *echo.Echo
-	addr string
+	e        *echo.Echo
+	addr     string
+	dbClient *sdk.DBClient
 }
 
 // AppConfig structure containing the server settings necessary for its operation.
@@ -35,6 +37,9 @@ func (ac *AppConfig) checkConfig() {
 	if ac.Timeout <= 0 {
 		ac.Timeout = 10 * time.Millisecond
 	}
+	if ac.DB == "" {
+		ac.DB = "localhost:9000"
+	}
 }
 
 // SearchRequest is strust for storage and validate query param.
@@ -42,6 +47,12 @@ type SearchRequest struct {
 	Query  string `validate:"required" query:"q"`
 	Limit  int    `validate:"gte=0" query:"limit"`
 	Offset int    `validate:"gte=0" query:"offset"`
+}
+
+// TemplateData is strust for send data in "search.html" template.
+type TemplateData struct {
+	Data  []sdk.ResponseData
+	Query string
 }
 
 // Validator - to add custom validator in echo.
@@ -54,12 +65,12 @@ func (v *Validator) Validate(i interface{}) error {
 	return v.validator.Struct(i)
 }
 
-// TemplateRenderer is a custom html/template renderer for Echo framework
+// TemplateRenderer is a custom html/template renderer for Echo framework.
 type TemplateRenderer struct {
 	*template.Template
 }
 
-// Render renders a template document
+// Render renders a template document.
 func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
 	return t.Template.ExecuteTemplate(w, name, data)
 }
@@ -70,11 +81,17 @@ func NewApp(appCfg AppConfig) (*API, error) {
 
 	log.Debug().Interface("api app config", appCfg).Msg("starting initialize api application")
 
+	dbClient, err := sdk.NewDBClient(appCfg.DB)
+	if err != nil {
+		return nil, err
+	}
+
 	e := echo.New()
 
 	a := &API{
-		e:    e,
-		addr: appCfg.NetInterface,
+		e:        e,
+		addr:     appCfg.NetInterface,
+		dbClient: dbClient,
 	}
 
 	e.Use(logMiddleware)
@@ -101,142 +118,29 @@ func (a *API) handleIndex(c echo.Context) error {
 	return c.File("./internal/web/index.html")
 }
 
-// Source structure for domain\article\site\source description
-type Source struct {
-	Date         time.Time `json:"date" validate:"required"`
-	DateFormated string
-	Title        string `json:"title" validate:"required"`
-}
-
-type ResponseData struct {
-	Source
-	Url string `json:"url"`
-}
-
-type TemplateData struct {
-	Responses []ResponseData
-	Query     string
-}
-
 func (a *API) handleSearch(c echo.Context) error {
-	request := &SearchRequest{}
+	var err error
+	req := &SearchRequest{}
 
-	if err := c.Bind(request); err != nil {
+	if err = c.Bind(req); err != nil {
 		log.Debug().Err(err).Msg("handleSearch Bind err")
 		return echo.NewHTTPError(http.StatusBadRequest)
 	}
 
-	if err := c.Validate(request); err != nil {
-		if request.Query == "" {
+	if err = c.Validate(req); err != nil {
+		if req.Query == "" {
 			return a.handleIndex(c)
 		} else {
 			log.Debug().Err(err).Msg("handleSearch Validate err")
 			return echo.NewHTTPError(http.StatusBadRequest)
 		}
 	}
-
 	data := TemplateData{
-		Responses: []ResponseData{
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-			{
-				Url: "./internal/web/index.html",
-				Source: Source{
-					Title:        request.Query,
-					DateFormated: time.Now().Format("Jan-02-2006"),
-				},
-			},
-		},
-		Query: request.Query,
+		Query: req.Query,
+	}
+	data.Data, err = a.dbClient.GetData("default", req.Query, req.Limit, req.Offset)
+	if err != nil {
+		return err
 	}
 
 	return c.Render(http.StatusOK, "search.html", data)
