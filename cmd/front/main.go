@@ -40,10 +40,6 @@ func main() {
 	}
 }
 
-func initFrontendServiceCfg(c *config) (api.AppConfig, error) {
-	return api.AppConfig{Timeout: c.Timeout, NetInterface: c.Listen, DB: c.DB}, nil
-}
-
 func initLogger(c *config) error {
 	log.Debug().Msg("initialize logger")
 	logLvl, err := zerolog.ParseLevel(strings.ToLower(c.LogLevel))
