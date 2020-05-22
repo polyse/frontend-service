@@ -83,7 +83,7 @@ func NewApp(appCfg AppConfig) (*API, error) {
 
 	log.Debug().Interface("api app config", appCfg).Msg("starting initialize api application")
 
-	dbClient, err := sdk.NewDBClient("http://localhost:9000")
+	dbClient, err := sdk.NewDBClient(appCfg.DB)
 	if err != nil {
 		return nil, err
 	}
