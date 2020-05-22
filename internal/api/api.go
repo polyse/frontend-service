@@ -16,9 +16,10 @@ import (
 
 // API structure containing the necessary server settings and responsible for starting and stopping it.
 type API struct {
-	e        *echo.Echo
-	addr     string
-	dbClient *sdk.DBClient
+	e            *echo.Echo
+	addr         string
+	dbCollection string
+	dbClient     *sdk.DBClient
 }
 
 // AppConfig structure containing the server settings necessary for its operation.
@@ -26,6 +27,7 @@ type AppConfig struct {
 	NetInterface string
 	Timeout      time.Duration
 	DB           string
+	DBCollection string
 }
 
 func (ac *AppConfig) checkConfig() {
@@ -81,7 +83,7 @@ func NewApp(appCfg AppConfig) (*API, error) {
 
 	log.Debug().Interface("api app config", appCfg).Msg("starting initialize api application")
 
-	dbClient, err := sdk.NewDBClient(appCfg.DB)
+	dbClient, err := sdk.NewDBClient("http://localhost:9000")
 	if err != nil {
 		return nil, err
 	}
@@ -89,9 +91,10 @@ func NewApp(appCfg AppConfig) (*API, error) {
 	e := echo.New()
 
 	a := &API{
-		e:        e,
-		addr:     appCfg.NetInterface,
-		dbClient: dbClient,
+		e:            e,
+		addr:         appCfg.NetInterface,
+		dbClient:     dbClient,
+		dbCollection: appCfg.DBCollection,
 	}
 
 	e.Use(logMiddleware)
@@ -138,9 +141,9 @@ func (a *API) handleSearch(c echo.Context) error {
 	data := TemplateData{
 		Query: req.Query,
 	}
-	data.Data, err = a.dbClient.GetData("default", req.Query, req.Limit, req.Offset)
+	data.Data, err = a.dbClient.GetData(a.dbCollection, req.Query, req.Limit, req.Offset)
 	if err != nil {
-		return err
+		log.Debug().Err(err).Msg("handleSearch GetData err")
 	}
 
 	return c.Render(http.StatusOK, "search.html", data)
