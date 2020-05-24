@@ -12,7 +12,7 @@ import (
 type config struct {
 	Listen       string        `env:"LISTEN" envDefault:"localhost:9900"`
 	DB           string        `env:"DB" envDefault:"http://localhost:9000"`
-	DBCollection string        `env:"DB" envDefault:"default"`
+	DBCollection string        `env:"DBCollection" envDefault:"default"`
 	Timeout      time.Duration `env:"TIMEOUT" envDefault:"10ms"`
 	LogLevel     string        `env:"LOG_LEVEL" envDefault:"info"`
 	LogFmt       string        `env:"LOG_FMT" envDefault:"console"`
