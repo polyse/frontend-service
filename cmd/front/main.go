@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	sdk "github.com/polyse/database-sdk"
 	"github.com/polyse/frontend-service/internal/api"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -40,10 +41,6 @@ func main() {
 	}
 }
 
-func initFrontendServiceCfg(c *config) (api.AppConfig, error) {
-	return api.AppConfig{Timeout: c.Timeout, NetInterface: c.Listen}, nil
-}
-
 func initLogger(c *config) error {
 	log.Debug().Msg("initialize logger")
 	logLvl, err := zerolog.ParseLevel(strings.ToLower(c.LogLevel))
@@ -59,4 +56,12 @@ func initLogger(c *config) error {
 		return fmt.Errorf("unknown output format %s", c.LogFmt)
 	}
 	return nil
+}
+
+func initFrontendServiceCfg(c *config) (api.AppConfig, error) {
+	dbClient, err := sdk.NewDBClient(c.DB)
+	if err != nil {
+		return api.AppConfig{}, err
+	}
+	return api.AppConfig{Timeout: c.Timeout, NetInterface: c.Listen, DBClient: dbClient, DBCollection: c.DBCollection}, nil
 }

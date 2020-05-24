@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolySE</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=Poiret+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/search.css">
+    <link rel="icon" type="image/png" href="images/logo-favicon.png" />
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="field">
+            <div><a href="./"><img class="logo" src="images/logo.png" alt="PolySE logo"></a></div>
+            <div class="form">
+                <form action="search" method="get">
+                    <div class="flex-container">
+                        <input class="textbox" type="text" name="q" id="q"  value="{{.Query}}" required="required">
+                        <button class="button-search" type="submit"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="results">
+
+            {{if .Data}}
+                {{range .Data}}
+                <div class="result">
+                    <div class="article"><a href="{{.Url}}" target="_blank">{{.Source.Title}}</a></div>
+                    <div class="url"><a href="{{.Url}}" target="_blank">{{.Url}}</a></div>
+                    <div class="date">{{.Source.Date.Format "Jan 02, 2006"}}</div>
+                </div>
+                {{end}}
+            {{else}}
+                <div class="result noresults">No results</div>
+            {{end}}
+        </div>
+    </div>
+</body>
+
+</html>
