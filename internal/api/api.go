@@ -46,9 +46,8 @@ func (ac *AppConfig) checkConfig() {
 
 // SearchRequest is strust for storage and validate query param.
 type SearchRequest struct {
-	Query  string `validate:"required" query:"q"`
-	Limit  int    `validate:"gte=0" query:"limit"`
-	Offset int    `validate:"gte=0" query:"offset"`
+	Query string `validate:"required" query:"q"`
+	// Page  int    `validate:"gte=1" query:"page"`
 }
 
 // TemplateData is strust for send data in "search.html" template.
@@ -136,7 +135,7 @@ func (a *API) handleSearch(c echo.Context) error {
 	data := TemplateData{
 		Query: req.Query,
 	}
-	data.Data, err = a.dbClient.GetData(a.dbCollection, req.Query, req.Limit, req.Offset)
+	data.Data, err = a.dbClient.GetData(a.dbCollection, req.Query, 0, 0)
 	if err != nil {
 		log.Debug().Err(err).Msg("handleSearch GetData err")
 	}

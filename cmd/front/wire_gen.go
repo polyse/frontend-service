@@ -21,5 +21,6 @@ func initFrontendService(c *config) (*api.API, func(), error) {
 		return nil, nil, err
 	}
 	return apiAPI, func() {
+		apiAPI.Close()
 	}, nil
 }
