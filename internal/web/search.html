@@ -25,12 +25,17 @@
             </div>
         </div>
         <div class="results">
-            {{range .Data}}
-            <div class="result">
-                <div class="article"><a href="{{.Url}}" target="_blank">{{.Source.Title}}</a></div>
-                <div class="url"><a href="{{.Url}}" target="_blank">{{.Url}}</a></div>
-                <div class="date">{{.Source.Date.Format "Jan 02, 2006"}}</div>
-            </div>
+
+            {{if .Data}}
+                {{range .Data}}
+                <div class="result">
+                    <div class="article"><a href="{{.Url}}" target="_blank">{{.Source.Title}}</a></div>
+                    <div class="url"><a href="{{.Url}}" target="_blank">{{.Url}}</a></div>
+                    <div class="date">{{.Source.Date.Format "Jan 02, 2006"}}</div>
+                </div>
+                {{end}}
+            {{else}}
+                <div class="result noresults">No results</div>
             {{end}}
         </div>
     </div>

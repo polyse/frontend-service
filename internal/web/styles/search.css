@@ -11,7 +11,7 @@
 .article{
     margin-bottom: 4px;
 }
-.article a{
+.article a, .noresults{
     color: rgb(49, 49, 49);
     font-size: 39px;
 }
