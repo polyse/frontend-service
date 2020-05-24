@@ -5,6 +5,8 @@ import (
 	"os"
 	"strings"
 
+	sdk "github.com/polyse/database-sdk"
+	"github.com/polyse/frontend-service/internal/api"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/xlab/closer"
@@ -54,4 +56,12 @@ func initLogger(c *config) error {
 		return fmt.Errorf("unknown output format %s", c.LogFmt)
 	}
 	return nil
+}
+
+func initFrontendServiceCfg(c *config) (api.AppConfig, error) {
+	dbClient, err := sdk.NewDBClient(c.DB)
+	if err != nil {
+		return api.AppConfig{}, err
+	}
+	return api.AppConfig{Timeout: c.Timeout, NetInterface: c.Listen, DBClient: dbClient, DBCollection: c.DBCollection}, nil
 }

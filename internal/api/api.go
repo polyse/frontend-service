@@ -26,7 +26,7 @@ type API struct {
 type AppConfig struct {
 	NetInterface string
 	Timeout      time.Duration
-	DB           string
+	DBClient     *sdk.DBClient
 	DBCollection string
 }
 
@@ -38,9 +38,6 @@ func (ac *AppConfig) checkConfig() {
 	}
 	if ac.Timeout <= 0 {
 		ac.Timeout = 10 * time.Millisecond
-	}
-	if ac.DB == "" {
-		ac.DB = "http://localhost:9000"
 	}
 	if ac.DBCollection == "" {
 		ac.DBCollection = "default"
@@ -86,17 +83,12 @@ func NewApp(appCfg AppConfig) (*API, error) {
 
 	log.Debug().Interface("api app config", appCfg).Msg("starting initialize api application")
 
-	dbClient, err := sdk.NewDBClient(appCfg.DB)
-	if err != nil {
-		return nil, err
-	}
-
 	e := echo.New()
 
 	a := &API{
 		e:            e,
 		addr:         appCfg.NetInterface,
-		dbClient:     dbClient,
+		dbClient:     appCfg.DBClient,
 		dbCollection: appCfg.DBCollection,
 	}
 
@@ -136,10 +128,10 @@ func (a *API) handleSearch(c echo.Context) error {
 	if err = c.Validate(req); err != nil {
 		if req.Query == "" {
 			return a.handleIndex(c)
-		} else {
-			log.Debug().Err(err).Msg("handleSearch Validate err")
-			return echo.NewHTTPError(http.StatusBadRequest)
 		}
+
+		log.Debug().Err(err).Msg("handleSearch Validate err")
+		return echo.NewHTTPError(http.StatusBadRequest)
 	}
 	data := TemplateData{
 		Query: req.Query,

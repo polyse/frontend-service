@@ -3,7 +3,6 @@ package main
 import (
 	"time"
 
-	"github.com/polyse/frontend-service/internal/api"
 	"github.com/rs/zerolog/log"
 
 	"github.com/caarlos0/env"
@@ -27,8 +26,4 @@ func load() (*config, error) {
 		return cfg, err
 	}
 	return cfg, nil
-}
-
-func initFrontendServiceCfg(c *config) (api.AppConfig, error) {
-	return api.AppConfig{Timeout: c.Timeout, NetInterface: c.Listen, DB: c.DB, DBCollection: c.DBCollection}, nil
 }
