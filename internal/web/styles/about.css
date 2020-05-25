@@ -23,6 +23,9 @@ body {
     height: auto;
     width: 240px;
 }
+.githublogo {
+    align-self: center;
+}
 .text {
     /* width: 100%; */
     display: flex;
