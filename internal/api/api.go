@@ -100,6 +100,7 @@ func NewApp(appCfg AppConfig) (*API, error) {
 	e.GET("/healthcheck", a.handleHealthcheck)
 	e.GET("/", a.handleIndex)
 	e.GET("/search", a.handleSearch)
+	e.GET("/about", a.handleAbout)
 	e.Static("/", "./internal/web")
 
 	log.Debug().Msg("endpoints registered")
@@ -141,6 +142,10 @@ func (a *API) handleSearch(c echo.Context) error {
 	}
 
 	return c.Render(http.StatusOK, "search.html", data)
+}
+
+func (a *API) handleAbout(c echo.Context) error {
+	return c.File("./internal/web/about.html")
 }
 
 // Run start the server.
